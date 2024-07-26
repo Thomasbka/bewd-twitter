@@ -7,7 +7,7 @@ RSpec.describe TweetsController, type: :controller do
     it 'renders new tweet object' do
       user = FactoryBot.create(:user)
       session = user.sessions.create
-      @request.cookie_jar.signed['twitter_session_token'] = session.token
+      @request.cookie_jar.signed[:twitter_session_token] = session.token
 
       post :create, params: {
         tweet: {
@@ -68,7 +68,7 @@ RSpec.describe TweetsController, type: :controller do
 
       delete :destroy, params: { id: tweet.id }
 
-      expect(response.body).to eq({ success: false }.to_json)
+      expect(response.body).to eq({ error: "Not authenticated" }.to_json)
       expect(user.tweets.count).to eq(1)
     end
   end
